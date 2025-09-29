@@ -44,20 +44,18 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
-                "gopls",
                 "tailwindcss",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
+                    vim.lsp.config(server_name, {
                         capabilities = capabilities
-                    }
+                    })
                 end,
 
                 zls = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.zls.setup({
-                        root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+                    vim.lsp.config('zls', {
+                        root_dir = vim.lsp.config.util.root_pattern(".git", "build.zig", "zls.json"),
                         settings = {
                             zls = {
                                 enable_inlay_hints = true,
@@ -71,8 +69,8 @@ return {
 
                 end,
                 ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+
+                    vim.lsp.config('lua_ls', {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -87,11 +85,10 @@ return {
                                 },
                             }
                         }
-                    }
+                    })
                 end,
                 ["tailwindcss"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.tailwindcss.setup({
+                    vim.lsp.config('tailwindcss', {
                         capabilities = capabilities,
                         filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte", "heex" },
                     })
